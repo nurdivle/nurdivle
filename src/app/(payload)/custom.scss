@@ -1,0 +1,23 @@
+.admin-back-icon {
+  width: 20px;
+  height: 20px;
+  overflow: visible;
+}
+
+.admin-back-icon path {
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  transition: transform 160ms ease;
+}
+
+.step-nav__home:has(.admin-back-icon) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-nav__home:has(.admin-back-icon):hover .admin-back-icon path {
+  transform: translateX(-1px);
+}

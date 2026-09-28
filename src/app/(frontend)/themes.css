@@ -1,0 +1,38 @@
+.site-theme {
+  --bg-raised: color-mix(in srgb, var(--bg) 64%, var(--bg-hover));
+  --subtle: color-mix(in srgb, var(--muted) 84%, var(--bg));
+  --accent-2: color-mix(in srgb, var(--accent) 76%, var(--muted));
+  min-height: 100svh;
+  background: var(--bg);
+  color: var(--muted);
+  isolation: isolate;
+  position: relative;
+  transition: background 220ms ease, color 220ms ease;
+}
+
+.cursor-glow {
+  --cursor-x: -1000px;
+  --cursor-y: -1000px;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(
+    circle 420px at var(--cursor-x) var(--cursor-y),
+    rgb(255 255 255 / 0.065),
+    rgb(255 255 255 / 0.025) 34%,
+    transparent 72%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.cursor-glow[data-visible='true'] {
+  opacity: 1;
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor-glow {
+    display: none;
+  }
+}
