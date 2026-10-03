@@ -28,7 +28,7 @@ export const hasSectionContent = (
     case 'projects':
       return getFeaturedProjects(content.projects).length > 0
     case 'skills':
-      return content.skillGroups.length > 0
+      return content.skillGroups.some((group) => (group.skills?.length ?? 0) > 0)
     case 'education':
       return content.education.length > 0
     case 'hobbies':

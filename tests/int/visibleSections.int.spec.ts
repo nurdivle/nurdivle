@@ -36,6 +36,13 @@ describe('portfolio section visibility', () => {
     expect(hasSectionContent(section('projects'), pageContent)).toBe(true)
   })
 
+  it('hides skill groups whose localized skills are empty', () => {
+    const pageContent = content()
+    pageContent.skillGroups.push({ skills: null } as unknown as SectionContent['skillGroups'][number])
+
+    expect(hasSectionContent(section('skills'), pageContent)).toBe(false)
+  })
+
   it('requires meaningful text in a custom section', () => {
     const blank = { root: { children: [{ children: [{ text: '   ' }] }] } }
     const populated = { root: { children: [{ children: [{ text: 'Hello' }] }] } }

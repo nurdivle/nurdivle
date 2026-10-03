@@ -187,7 +187,7 @@ export function PortfolioPage({ content }: Props) {
                     <h3>{group.title}</h3>
                   </header>
                   <ul aria-label={ui[locale].technologies} className="skill-card__tags">
-                    {group.skills.map((skill) => (
+                    {(group.skills ?? []).map((skill) => (
                       <li className={`tag--${skill.colorKey ?? group.colorKey}`} key={skill.id ?? skill.name}>
                         {skill.name}
                       </li>
