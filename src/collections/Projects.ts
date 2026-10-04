@@ -41,9 +41,9 @@ export const Projects: CollectionConfig = {
     afterDelete: [revalidatePortfolioAfterCollectionDelete],
   },
   fields: [
-    { name: 'key', type: 'text', label: adminLabel('Anahtar', 'Key'), required: true, unique: true },
-    { name: 'title', type: 'text', label: adminLabel('Başlık', 'Title'), localized: true, required: true },
-    { name: 'summary', type: 'textarea', label: adminLabel('Özet', 'Summary'), localized: true, required: true },
+    { name: 'key', type: 'text', label: adminLabel('Anahtar', 'Key'), unique: true },
+    { name: 'title', type: 'text', label: adminLabel('Başlık', 'Title'), localized: true },
+    { name: 'summary', type: 'textarea', label: adminLabel('Özet', 'Summary'), localized: true },
     { name: 'role', type: 'text', label: adminLabel('Rol', 'Role'), localized: true },
     {
       name: 'image',
@@ -79,7 +79,7 @@ export const Projects: CollectionConfig = {
         singular: adminLabel('Teknoloji', 'Technology'),
       },
       fields: [
-        { name: 'name', type: 'text', label: adminLabel('Ad', 'Name'), required: true },
+        { name: 'name', type: 'text', label: adminLabel('Ad', 'Name') },
       ],
     },
     { name: 'liveUrl', type: 'text', label: adminLabel('Canlı Site Bağlantısı', 'Live Site URL') },
@@ -97,7 +97,7 @@ export const Projects: CollectionConfig = {
         ),
       },
     },
-    { name: 'order', type: 'number', label: adminLabel('Sıralama', 'Order'), defaultValue: 0, index: true, required: true },
+    { name: 'order', type: 'number', label: adminLabel('Sıralama', 'Order'), defaultValue: 0, index: true },
   ],
   versions: { drafts: true },
 }

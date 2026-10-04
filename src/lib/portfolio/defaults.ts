@@ -1,10 +1,13 @@
-import type {
-  Profile,
-  SiteSetting,
-  SkillGroup,
-} from '@/payload-types'
+import type { SkillGroup } from '@/payload-types'
 
-import type { Locale, Localized, PortfolioContent, PortfolioSection } from './types'
+import type {
+  Locale,
+  Localized,
+  PortfolioContent,
+  PortfolioProfile,
+  PortfolioSection,
+  PortfolioSettings,
+} from './types'
 import { defaultColorTheme } from './colorThemes'
 
 type SectionSeed = {
@@ -71,7 +74,7 @@ const timestamp = '2026-01-01T00:00:00.000Z'
 
 const text = <T>(locale: Locale, values: Localized<T>): T => values[locale]
 
-export const getDefaultProfile = (locale: Locale): Profile => ({
+export const getDefaultProfile = (locale: Locale): PortfolioProfile => ({
   aboutParagraphs: [
     {
       text: text(locale, {
@@ -98,7 +101,7 @@ export const getDefaultProfile = (locale: Locale): Profile => ({
   updatedAt: timestamp,
 })
 
-export const getDefaultSettings = (locale: Locale): SiteSetting => ({
+export const getDefaultSettings = (locale: Locale): PortfolioSettings => ({
   backgroundEffect: 'gradient',
   colorTheme: defaultColorTheme,
   defaultLanguage: 'tr',

@@ -25,7 +25,6 @@ export const Media: CollectionConfig = {
       name: 'alt',
       type: 'text',
       label: adminLabel('Alternatif Metin', 'Alternative Text'),
-      required: true,
     },
   ],
   upload: {

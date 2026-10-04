@@ -30,15 +30,43 @@ export type PortfolioSection = Pick<
   route: SectionRoute
 }
 
+type ProfileParagraph = NonNullable<Profile['aboutParagraphs']>[number] & { text: string }
+type ProfileSocialLink = NonNullable<Profile['socialLinks']>[number] & {
+  label: string
+  platform: NonNullable<NonNullable<Profile['socialLinks']>[number]['platform']>
+  url: string
+}
+
+export type PortfolioProfile = Omit<
+  Profile,
+  'aboutParagraphs' | 'jobTitle' | 'name' | 'socialLinks' | 'tagline'
+> & {
+  aboutParagraphs: ProfileParagraph[]
+  jobTitle: string
+  name: string
+  socialLinks: ProfileSocialLink[]
+  tagline: string
+}
+
+export type PortfolioSettings = SiteSetting & {
+  backgroundEffect: NonNullable<SiteSetting['backgroundEffect']>
+  colorTheme: NonNullable<SiteSetting['colorTheme']>
+  defaultLanguage: NonNullable<SiteSetting['defaultLanguage']>
+  defaultSectionKey: string
+  languageSwitcherPosition: NonNullable<SiteSetting['languageSwitcherPosition']>
+  siteDescription: string
+  siteTitle: string
+}
+
 export type PortfolioContent = {
   education: Education[]
   experiences: Experience[]
   hobbies: Hobby[]
   locale: Locale
-  profile: Profile
+  profile: PortfolioProfile
   projects: Project[]
   sections: PortfolioSection[]
-  settings: SiteSetting
+  settings: PortfolioSettings
   skillGroups: SkillGroup[]
   source: 'cms' | 'fallback'
 }

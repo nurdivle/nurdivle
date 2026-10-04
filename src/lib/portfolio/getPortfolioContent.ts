@@ -10,7 +10,25 @@ import { portfolioContentCacheTag } from './cache'
 import { getOtherLocale, type Locale, type PortfolioContent, type PortfolioSection } from './types'
 
 const toLegacyAnchors = (section?: Section): string[] =>
-  section?.legacyAnchors?.map((item) => item.value) ?? []
+  section?.legacyAnchors
+    ?.map((item) => item.value?.trim())
+    .filter((value): value is string => Boolean(value)) ?? []
+
+const hasText = (value: unknown): value is string =>
+  typeof value === 'string' && value.trim().length > 0
+
+type ReadySection = Section & {
+  anchor: string
+  key: string
+  label: string
+  type: NonNullable<Section['type']>
+}
+
+const isReadySection = (section: Section): section is ReadySection =>
+  hasText(section.anchor) &&
+  hasText(section.key) &&
+  hasText(section.label) &&
+  hasText(section.type)
 
 const loadPortfolioContent = async (
   locale: Locale,
@@ -44,15 +62,21 @@ const loadPortfolioContent = async (
       payload.find({ collection: 'hobbies', draft: includeDrafts, fallbackLocale: false, limit: 100, locale, overrideAccess: includeDrafts, sort: 'order' }),
     ])
 
-    const otherByKey = new Map(otherSections.docs.map((section) => [section.key, section]))
-    const sections: PortfolioSection[] = localizedSections.docs.length
-      ? localizedSections.docs
-          .filter((section) => section.enabled !== false)
+    const otherByKey = new Map(
+      otherSections.docs
+        .filter((section) => hasText(section.key))
+        .map((section) => [section.key, section]),
+    )
+    const readySections = localizedSections.docs.filter(
+      (section): section is ReadySection => section.enabled !== false && isReadySection(section),
+    )
+    const sections: PortfolioSection[] = readySections.length
+      ? readySections
           .map((section) => {
             const other = otherByKey.get(section.key)
             const anchors = {
               [locale]: section.anchor,
-              [otherLocale]: other?.anchor ?? section.anchor,
+              [otherLocale]: hasText(other?.anchor) ? other.anchor : section.anchor,
             } as Record<Locale, string>
             const legacyAnchors = {
               [locale]: toLegacyAnchors(section),
@@ -74,6 +98,22 @@ const loadPortfolioContent = async (
           })
       : fallback.sections
 
+    const aboutParagraphs = (profile.aboutParagraphs ?? []).flatMap((paragraph) =>
+      hasText(paragraph.text)
+        ? [{ ...paragraph, text: paragraph.text.trim() }]
+        : [],
+    )
+    const socialLinks = (profile.socialLinks ?? []).flatMap((link) =>
+      hasText(link.label) && hasText(link.platform) && hasText(link.url)
+        ? [{
+            ...link,
+            label: link.label.trim(),
+            platform: link.platform,
+            url: link.url.trim(),
+          }]
+        : [],
+    )
+
     return {
       education: education.docs,
       experiences: experiences.docs,
@@ -82,15 +122,26 @@ const loadPortfolioContent = async (
       profile: {
         ...fallback.profile,
         ...profile,
-        aboutParagraphs: profile.aboutParagraphs ?? [],
+        aboutParagraphs,
         jobTitle: profile.jobTitle?.trim() ?? '',
         name: profile.name?.trim() ?? '',
-        socialLinks: profile.socialLinks ?? [],
+        socialLinks,
         tagline: profile.tagline?.trim() ?? '',
       },
       projects: projects.docs,
       sections,
-      settings,
+      settings: {
+        ...fallback.settings,
+        ...settings,
+        backgroundEffect: settings.backgroundEffect ?? fallback.settings.backgroundEffect,
+        colorTheme: settings.colorTheme ?? fallback.settings.colorTheme,
+        defaultLanguage: settings.defaultLanguage ?? fallback.settings.defaultLanguage,
+        defaultSectionKey: settings.defaultSectionKey?.trim() || fallback.settings.defaultSectionKey,
+        languageSwitcherPosition:
+          settings.languageSwitcherPosition ?? fallback.settings.languageSwitcherPosition,
+        siteDescription: settings.siteDescription?.trim() || fallback.settings.siteDescription,
+        siteTitle: settings.siteTitle?.trim() || fallback.settings.siteTitle,
+      },
       skillGroups: skillGroups.docs,
       source: 'cms',
     }

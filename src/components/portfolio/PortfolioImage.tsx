@@ -13,7 +13,7 @@ export function PortfolioImage({ className, image, sizes }: Props) {
 
   return (
     <Image
-      alt={image.alt}
+      alt={image.alt?.trim() ?? ''}
       className={className}
       height={image.height ?? 360}
       sizes={sizes}

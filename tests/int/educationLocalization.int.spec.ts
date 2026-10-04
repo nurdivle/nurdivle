@@ -10,8 +10,8 @@ describe('education localization', () => {
 
     expect(institution).toMatchObject({
       localized: true,
-      required: true,
       type: 'text',
     })
+    expect(institution).not.toHaveProperty('required', true)
   })
 })

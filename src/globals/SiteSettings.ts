@@ -26,7 +26,6 @@ export const SiteSettings: GlobalConfig = {
         { label: 'Türkçe', value: 'tr' },
         { label: 'English', value: 'en' },
       ],
-      required: true,
     },
     {
       name: 'languageSwitcherPosition',
@@ -37,7 +36,6 @@ export const SiteSettings: GlobalConfig = {
         { label: adminLabel('Sağ üst', 'Top right'), value: 'top-right' },
         { label: adminLabel('Sağ alt', 'Bottom right'), value: 'bottom-right' },
       ],
-      required: true,
     },
     {
       name: 'backgroundEffect',
@@ -49,7 +47,6 @@ export const SiteSettings: GlobalConfig = {
         { label: adminLabel('Yumuşak geçiş', 'Soft gradient'), value: 'gradient' },
         { label: adminLabel('İkili sayı deseni', 'Binary pattern'), value: 'binary' },
       ],
-      required: true,
     },
     {
       name: 'colorTheme',
@@ -63,11 +60,10 @@ export const SiteSettings: GlobalConfig = {
       defaultValue: defaultColorTheme,
       label: adminLabel('Site Renk Paleti', 'Site Color Palette'),
       options: colorThemeOptions,
-      required: true,
     },
-    { name: 'siteTitle', type: 'text', label: adminLabel('Site Başlığı', 'Site Title'), localized: true, required: true },
-    { name: 'siteDescription', type: 'textarea', label: adminLabel('Site Açıklaması', 'Site Description'), localized: true, required: true },
-    { name: 'defaultSectionKey', type: 'text', label: adminLabel('Varsayılan Bölüm Anahtarı', 'Default Section Key'), defaultValue: 'about', required: true },
+    { name: 'siteTitle', type: 'text', label: adminLabel('Site Başlığı', 'Site Title'), localized: true },
+    { name: 'siteDescription', type: 'textarea', label: adminLabel('Site Açıklaması', 'Site Description'), localized: true },
+    { name: 'defaultSectionKey', type: 'text', label: adminLabel('Varsayılan Bölüm Anahtarı', 'Default Section Key'), defaultValue: 'about' },
   ],
   versions: { drafts: true },
 }

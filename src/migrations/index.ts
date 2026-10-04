@@ -5,6 +5,7 @@ import * as migration_20260925_211301_add_site_color_themes from './20260925_211
 import * as migration_20260925_213349_localize_education_institution from './20260925_213349_localize_education_institution';
 import * as migration_20260926_185823_add_project_archive_and_experience_images from './20260926_185823_add_project_archive_and_experience_images';
 import * as migration_20260927_005222_neon_object_storage from './20260927_005222_neon_object_storage';
+import * as migration_20261004_145021_make_content_fields_optional from './20261004_145021_make_content_fields_optional';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260927_005222_neon_object_storage.up,
     down: migration_20260927_005222_neon_object_storage.down,
-    name: '20260927_005222_neon_object_storage'
+    name: '20260927_005222_neon_object_storage',
+  },
+  {
+    up: migration_20261004_145021_make_content_fields_optional.up,
+    down: migration_20261004_145021_make_content_fields_optional.down,
+    name: '20261004_145021_make_content_fields_optional'
   },
 ];

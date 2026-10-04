@@ -38,7 +38,7 @@ type Props = {
 
 type IconProps = { 'aria-hidden'?: boolean; size?: number; strokeWidth?: number }
 
-const skillIcons: Record<SkillGroup['iconKey'], ComponentType<IconProps>> = {
+const skillIcons: Record<NonNullable<SkillGroup['iconKey']>, ComponentType<IconProps>> = {
   activity: Activity,
   cloud: Cloud,
   code: Code2,
@@ -48,7 +48,7 @@ const skillIcons: Record<SkillGroup['iconKey'], ComponentType<IconProps>> = {
   sparkles: Sparkles,
 }
 
-const hobbyIcons: Record<Hobby['iconKey'], ComponentType<IconProps>> = {
+const hobbyIcons: Record<NonNullable<Hobby['iconKey']>, ComponentType<IconProps>> = {
   book: BookOpen,
   camera: Camera,
   coffee: Coffee,
@@ -70,6 +70,8 @@ const getSocialHref = (platform: keyof typeof socialIcons, url: string) => {
   const href = url.trim()
   return platform === 'email' && !href.toLowerCase().startsWith('mailto:') ? `mailto:${href}` : href
 }
+
+const hasText = (value: null | string | undefined): boolean => Boolean(value?.trim())
 
 const ui = {
   en: {
@@ -114,8 +116,20 @@ export function PortfolioPage({ content }: Props) {
       case 'experience':
         return (
           <div className="record-list">
-            {experiences.map((experience) => {
+            {experiences.filter((experience) =>
+              hasText(experience.role) ||
+              hasText(experience.company) ||
+              hasText(experience.location) ||
+              hasText(experience.summary) ||
+              hasText(experience.startDate) ||
+              hasText(experience.endDate) ||
+              hasText(experience.companyUrl) ||
+              Boolean(getUploadedImage(experience.image)) ||
+              Boolean(experience.technologies?.some((technology) => hasText(technology.name))),
+            ).map((experience) => {
               const image = getUploadedImage(experience.image)
+              const heading = [experience.role, experience.company].filter(hasText).join(' · ')
+              const technologies = experience.technologies?.filter((technology) => hasText(technology.name)) ?? []
               const recordContent = (
                 <>
                   <div className="record__aside">
@@ -137,24 +151,28 @@ export function PortfolioPage({ content }: Props) {
                     )}
                   </div>
                   <div className="record__content">
-                    <h3>
-                      {experience.role} · {experience.company}
-                      {experience.companyUrl && <ArrowUpRight aria-hidden="true" size={16} />}
-                    </h3>
+                    {heading && (
+                      <h3>
+                        {heading}
+                        {experience.companyUrl && <ArrowUpRight aria-hidden="true" size={16} />}
+                      </h3>
+                    )}
                     {experience.location && <p className="record__meta">{experience.location}</p>}
-                    <p>{experience.summary}</p>
-                    <ul aria-label={ui[locale].technologies} className="tag-list">
-                      {experience.technologies?.map((technology) => (
-                        <li key={technology.id ?? technology.name}>{technology.name}</li>
-                      ))}
-                    </ul>
+                    {experience.summary && <p>{experience.summary}</p>}
+                    {technologies.length > 0 && (
+                      <ul aria-label={ui[locale].technologies} className="tag-list">
+                        {technologies.map((technology) => (
+                          <li key={technology.id ?? technology.name}>{technology.name}</li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </>
               )
 
               return experience.companyUrl ? (
                 <a
-                  aria-label={`${experience.role} · ${experience.company}`}
+                  aria-label={heading || experience.companyUrl}
                   className="record record--linked"
                   href={experience.companyUrl}
                   key={experience.id}
@@ -178,17 +196,21 @@ export function PortfolioPage({ content }: Props) {
       case 'skills':
         return (
           <div className="skill-grid">
-            {skillGroups.map((group) => {
-              const Icon = skillIcons[group.iconKey]
+            {skillGroups.filter((group) =>
+              hasText(group.title) || group.skills?.some((skill) => hasText(skill.name)),
+            ).map((group) => {
+              const groupColor = group.colorKey ?? 'slate'
+              const Icon = group.iconKey ? skillIcons[group.iconKey] : Sparkles
+              const skills = group.skills?.filter((skill) => hasText(skill.name)) ?? []
               return (
-                <article className={`skill-card skill-card--${group.colorKey}`} key={group.id}>
+                <article className={`skill-card skill-card--${groupColor}`} key={group.id}>
                   <header>
                     <Icon aria-hidden={true} size={24} strokeWidth={1.8} />
                     <h3>{group.title}</h3>
                   </header>
                   <ul aria-label={ui[locale].technologies} className="skill-card__tags">
-                    {(group.skills ?? []).map((skill) => (
-                      <li className={`tag--${skill.colorKey ?? group.colorKey}`} key={skill.id ?? skill.name}>
+                    {skills.map((skill) => (
+                      <li className={`tag--${skill.colorKey ?? groupColor}`} key={skill.id ?? skill.name}>
                         {skill.name}
                       </li>
                     ))}
@@ -202,13 +224,23 @@ export function PortfolioPage({ content }: Props) {
       case 'education':
         return (
           <div className="record-list">
-            {education.map((item) => (
+            {education.filter((item) =>
+              hasText(item.program) ||
+              hasText(item.institution) ||
+              hasText(item.degree) ||
+              hasText(item.location) ||
+              hasText(item.description) ||
+              hasText(item.startDate) ||
+              hasText(item.endDate),
+            ).map((item) => (
               <article className="record" key={item.id}>
                 <p className="record__date">
                   {formatDateRange({ endDate: item.endDate, locale, startDate: item.startDate })}
                 </p>
                 <div className="record__content">
-                  <h3>{item.program} · {item.institution}</h3>
+                  {[item.program, item.institution].filter(hasText).length > 0 && (
+                    <h3>{[item.program, item.institution].filter(hasText).join(' · ')}</h3>
+                  )}
                   {(item.degree || item.location) && (
                     <p className="record__meta">{[item.degree, item.location].filter(Boolean).join(' · ')}</p>
                   )}
@@ -222,14 +254,16 @@ export function PortfolioPage({ content }: Props) {
       case 'hobbies':
         return (
           <div className="hobby-grid">
-            {hobbies.map((hobby) => {
-              const Icon = hobbyIcons[hobby.iconKey]
+            {hobbies.filter((hobby) =>
+              hasText(hobby.title) || hasText(hobby.description) || Boolean(hobby.iconKey),
+            ).map((hobby) => {
+              const Icon = hobby.iconKey ? hobbyIcons[hobby.iconKey] : Sparkles
               return (
                 <article className="hobby-card" key={hobby.id}>
                   <Icon aria-hidden={true} size={22} strokeWidth={1.8} />
                   <div>
-                    <h3>{hobby.title}</h3>
-                    <p>{hobby.description}</p>
+                    {hobby.title && <h3>{hobby.title}</h3>}
+                    {hobby.description && <p>{hobby.description}</p>}
                   </div>
                 </article>
               )

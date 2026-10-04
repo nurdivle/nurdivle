@@ -16,9 +16,9 @@ export const Profile: GlobalConfig = {
     afterChange: [revalidatePortfolioAfterGlobalChange],
   },
   fields: [
-    { name: 'name', type: 'text', label: adminLabel('Ad Soyad', 'Name'), localized: true, required: true },
-    { name: 'jobTitle', type: 'text', label: adminLabel('Mesleki Ünvan', 'Job Title'), localized: true, required: true },
-    { name: 'tagline', type: 'textarea', label: adminLabel('Kısa Tanıtım', 'Tagline'), localized: true, required: true },
+    { name: 'name', type: 'text', label: adminLabel('Ad Soyad', 'Name'), localized: true },
+    { name: 'jobTitle', type: 'text', label: adminLabel('Mesleki Ünvan', 'Job Title'), localized: true },
+    { name: 'tagline', type: 'textarea', label: adminLabel('Kısa Tanıtım', 'Tagline'), localized: true },
     {
       name: 'aboutParagraphs',
       type: 'array',
@@ -28,10 +28,9 @@ export const Profile: GlobalConfig = {
         singular: adminLabel('Hakkımda Paragrafı', 'About Paragraph'),
       },
       fields: [
-        { name: 'text', type: 'textarea', label: adminLabel('Metin', 'Text'), required: true },
+        { name: 'text', type: 'textarea', label: adminLabel('Metin', 'Text') },
       ],
       localized: true,
-      required: true,
     },
     {
       name: 'socialLinks',
@@ -58,7 +57,6 @@ export const Profile: GlobalConfig = {
             { label: adminLabel('E-posta', 'Email'), value: 'email' },
             { label: adminLabel('Web Sitesi', 'Website'), value: 'website' },
           ],
-          required: true,
         },
         {
           name: 'label',
@@ -71,9 +69,8 @@ export const Profile: GlobalConfig = {
           },
           label: adminLabel('Satır Adı / Erişilebilirlik Etiketi', 'Row Name / Accessibility Label'),
           localized: true,
-          required: true,
         },
-        { name: 'url', type: 'text', label: adminLabel('Bağlantı', 'URL'), required: true },
+        { name: 'url', type: 'text', label: adminLabel('Bağlantı', 'URL') },
       ],
     },
     { name: 'resume', type: 'upload', label: adminLabel('Özgeçmiş', 'Resume'), relationTo: 'media', localized: true },

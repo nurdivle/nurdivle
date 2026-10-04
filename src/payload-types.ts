@@ -148,7 +148,7 @@ export interface User {
 }
 export interface Media {
   id: number;
-  alt: string;
+  alt?: string | null;
   prefix?: string | null;
   _objectKey?: string | null;
   updatedAt: string;
@@ -165,20 +165,20 @@ export interface Media {
 }
 export interface Section {
   id: number;
-    key: string;
-  type: 'about' | 'experience' | 'projects' | 'skills' | 'education' | 'hobbies' | 'custom';
-  label: string;
-    anchor: string;
+    key?: string | null;
+  type?: ('about' | 'experience' | 'projects' | 'skills' | 'education' | 'hobbies' | 'custom') | null;
+  label?: string | null;
+    anchor?: string | null;
     legacyAnchors?:
     | {
-        value: string;
+        value?: string | null;
         id?: string | null;
       }[]
     | null;
   intro?: string | null;
   enabled?: boolean | null;
   showInNavigation?: boolean | null;
-  order: number;
+  order?: number | null;
   customContent?: {
     root: {
       type: string;
@@ -200,87 +200,89 @@ export interface Section {
 }
 export interface Experience {
   id: number;
-  key: string;
-  company: string;
-  role: string;
+  key?: string | null;
+  company?: string | null;
+  role?: string | null;
   location?: string | null;
-  startDate: string;
+  startDate?: string | null;
   endDate?: string | null;
   isCurrent?: boolean | null;
-  summary: string;
+  summary?: string | null;
     image?: (number | null) | Media;
   technologies?:
     | {
-        name: string;
+        name?: string | null;
         id?: string | null;
       }[]
     | null;
   companyUrl?: string | null;
-  order: number;
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
 export interface Project {
   id: number;
-  key: string;
-  title: string;
-  summary: string;
+  key?: string | null;
+  title?: string | null;
+  summary?: string | null;
   role?: string | null;
     image?: (number | null) | Media;
     year?: number | null;
   technologies?:
     | {
-        name: string;
+        name?: string | null;
         id?: string | null;
       }[]
     | null;
   liveUrl?: string | null;
   repositoryUrl?: string | null;
     featured?: boolean | null;
-  order: number;
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
 export interface SkillGroup {
   id: number;
-  key: string;
-  title: string;
-  iconKey: 'code' | 'network' | 'cloud' | 'database' | 'shield' | 'activity' | 'sparkles';
-  colorKey: 'cyan' | 'mint' | 'violet' | 'amber' | 'rose' | 'slate';
-  skills: {
-    name: string;
-    colorKey?: ('cyan' | 'mint' | 'violet' | 'amber' | 'rose' | 'slate') | null;
-    id?: string | null;
-  }[];
-  order: number;
+  key?: string | null;
+  title?: string | null;
+  iconKey?: ('code' | 'network' | 'cloud' | 'database' | 'shield' | 'activity' | 'sparkles') | null;
+  colorKey?: ('cyan' | 'mint' | 'violet' | 'amber' | 'rose' | 'slate') | null;
+  skills?:
+    | {
+        name?: string | null;
+        colorKey?: ('cyan' | 'mint' | 'violet' | 'amber' | 'rose' | 'slate') | null;
+        id?: string | null;
+      }[]
+    | null;
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
 export interface Education {
   id: number;
-  key: string;
-  institution: string;
-  program: string;
+  key?: string | null;
+  institution?: string | null;
+  program?: string | null;
   degree?: string | null;
   startDate?: string | null;
   endDate?: string | null;
   location?: string | null;
   description?: string | null;
-  order: number;
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
 export interface Hobby {
   id: number;
-  key: string;
-  title: string;
-  description: string;
-  iconKey: 'book' | 'camera' | 'gamepad' | 'music' | 'plane' | 'dumbbell' | 'coffee';
-  order: number;
+  key?: string | null;
+  title?: string | null;
+  description?: string | null;
+  iconKey?: ('book' | 'camera' | 'gamepad' | 'music' | 'plane' | 'dumbbell' | 'coffee') | null;
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -532,18 +534,20 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 export interface Profile {
   id: number;
-  name: string;
-  jobTitle: string;
-  tagline: string;
-  aboutParagraphs: {
-    text: string;
-    id?: string | null;
-  }[];
+  name?: string | null;
+  jobTitle?: string | null;
+  tagline?: string | null;
+  aboutParagraphs?:
+    | {
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   socialLinks?:
     | {
-        platform: 'github' | 'linkedin' | 'instagram' | 'email' | 'website';
-                label: string;
-        url: string;
+        platform?: ('github' | 'linkedin' | 'instagram' | 'email' | 'website') | null;
+                label?: string | null;
+        url?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -554,30 +558,33 @@ export interface Profile {
 }
 export interface SiteSetting {
   id: number;
-  defaultLanguage: 'tr' | 'en';
-  languageSwitcherPosition: 'top-right' | 'bottom-right';
-  backgroundEffect: 'off' | 'gradient' | 'binary';
-    colorTheme:
-    | 'ink-mint'
-    | 'ocean-ink'
-    | 'graphite-sage'
-    | 'night-plum'
-    | 'warm-anthracite'
-    | 'pure-anthracite'
-    | 'smoky-blue'
-    | 'deep-petrol'
-    | 'dark-olive'
-    | 'burgundy-ink'
-    | 'coffee-ink'
-    | 'carbon-black'
-    | 'titanium'
-    | 'blue-anthracite'
-    | 'smoke-graphite'
-    | 'warm-graphite'
-    | 'lava-stone';
-  siteTitle: string;
-  siteDescription: string;
-  defaultSectionKey: string;
+  defaultLanguage?: ('tr' | 'en') | null;
+  languageSwitcherPosition?: ('top-right' | 'bottom-right') | null;
+  backgroundEffect?: ('off' | 'gradient' | 'binary') | null;
+    colorTheme?:
+    | (
+        | 'ink-mint'
+        | 'ocean-ink'
+        | 'graphite-sage'
+        | 'night-plum'
+        | 'warm-anthracite'
+        | 'pure-anthracite'
+        | 'smoky-blue'
+        | 'deep-petrol'
+        | 'dark-olive'
+        | 'burgundy-ink'
+        | 'coffee-ink'
+        | 'carbon-black'
+        | 'titanium'
+        | 'blue-anthracite'
+        | 'smoke-graphite'
+        | 'warm-graphite'
+        | 'lava-stone'
+      )
+    | null;
+  siteTitle?: string | null;
+  siteDescription?: string | null;
+  defaultSectionKey?: string | null;
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;

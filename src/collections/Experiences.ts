@@ -27,14 +27,14 @@ export const Experiences: CollectionConfig = {
     afterDelete: [revalidatePortfolioAfterCollectionDelete],
   },
   fields: [
-    { name: 'key', type: 'text', label: adminLabel('Anahtar', 'Key'), required: true, unique: true },
-    { name: 'company', type: 'text', label: adminLabel('Şirket', 'Company'), required: true },
-    { name: 'role', type: 'text', label: adminLabel('Rol', 'Role'), localized: true, required: true },
+    { name: 'key', type: 'text', label: adminLabel('Anahtar', 'Key'), unique: true },
+    { name: 'company', type: 'text', label: adminLabel('Şirket', 'Company') },
+    { name: 'role', type: 'text', label: adminLabel('Rol', 'Role'), localized: true },
     { name: 'location', type: 'text', label: adminLabel('Konum', 'Location'), localized: true },
-    { name: 'startDate', type: 'date', label: adminLabel('Başlangıç Tarihi', 'Start Date'), required: true },
+    { name: 'startDate', type: 'date', label: adminLabel('Başlangıç Tarihi', 'Start Date') },
     { name: 'endDate', type: 'date', label: adminLabel('Bitiş Tarihi', 'End Date') },
     { name: 'isCurrent', type: 'checkbox', label: adminLabel('Devam Ediyor', 'Current'), defaultValue: false },
-    { name: 'summary', type: 'textarea', label: adminLabel('Özet', 'Summary'), localized: true, required: true },
+    { name: 'summary', type: 'textarea', label: adminLabel('Özet', 'Summary'), localized: true },
     {
       name: 'image',
       type: 'upload',
@@ -56,11 +56,11 @@ export const Experiences: CollectionConfig = {
         singular: adminLabel('Teknoloji', 'Technology'),
       },
       fields: [
-        { name: 'name', type: 'text', label: adminLabel('Ad', 'Name'), required: true },
+        { name: 'name', type: 'text', label: adminLabel('Ad', 'Name') },
       ],
     },
     { name: 'companyUrl', type: 'text', label: adminLabel('Şirket Bağlantısı', 'Company URL') },
-    { name: 'order', type: 'number', label: adminLabel('Sıralama', 'Order'), defaultValue: 0, index: true, required: true },
+    { name: 'order', type: 'number', label: adminLabel('Sıralama', 'Order'), defaultValue: 0, index: true },
   ],
   versions: { drafts: true },
 }

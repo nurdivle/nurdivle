@@ -26,9 +26,9 @@ describe('API', () => {
 
     expect(anchor).toMatchObject({
       localized: true,
-      required: true,
       type: 'text',
     })
+    expect(anchor).not.toHaveProperty('required', true)
   })
 
   it('loads the CMS-managed skill groups without requiring seeded content', async () => {

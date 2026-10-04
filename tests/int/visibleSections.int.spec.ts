@@ -32,7 +32,10 @@ describe('portfolio section visibility', () => {
     const pageContent = content()
     expect(hasSectionContent(section('projects'), pageContent)).toBe(false)
 
-    pageContent.projects.push({ featured: true } as SectionContent['projects'][number])
+    pageContent.projects.push({
+      featured: true,
+      title: 'Project',
+    } as SectionContent['projects'][number])
     expect(hasSectionContent(section('projects'), pageContent)).toBe(true)
   })
 

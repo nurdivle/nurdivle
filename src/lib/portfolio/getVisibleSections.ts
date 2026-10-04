@@ -16,25 +16,44 @@ const hasRichText = (value: unknown): boolean => {
   return Array.isArray(node.children) && node.children.some(hasRichText)
 }
 
+const hasText = (value: unknown): boolean =>
+  typeof value === 'string' && value.trim().length > 0
+
+const hasListItemContent = (item: unknown): boolean => {
+  if (!item || typeof item !== 'object') return hasText(item)
+
+  return Object.entries(item).some(([key, value]) => {
+    if (['createdAt', 'id', 'order', 'updatedAt'].includes(key)) return false
+    if (hasText(value)) return true
+    if (Array.isArray(value)) return value.some((entry) => hasListItemContent(entry))
+    if (value && typeof value === 'object') return hasListItemContent(value)
+    return false
+  })
+}
+
 export const hasSectionContent = (
   section: PortfolioSection,
   content: SectionContent,
 ): boolean => {
   switch (section.type) {
     case 'about':
-      return content.profile.aboutParagraphs.some((paragraph) => paragraph.text.trim().length > 0)
+      return content.profile.aboutParagraphs.some((paragraph) => hasText(paragraph.text))
     case 'experience':
-      return content.experiences.length > 0
+      return content.experiences.some((item) => hasListItemContent(item))
     case 'projects':
       return getFeaturedProjects(content.projects).length > 0
     case 'skills':
-      return content.skillGroups.some((group) => (group.skills?.length ?? 0) > 0)
+      return content.skillGroups.some(
+        (group) => hasText(group.title) || group.skills?.some((skill) => hasText(skill.name)),
+      )
     case 'education':
-      return content.education.length > 0
+      return content.education.some((item) => hasListItemContent(item))
     case 'hobbies':
-      return content.hobbies.length > 0
+      return content.hobbies.some((item) => hasListItemContent(item))
     case 'custom':
       return hasRichText(section.customContent)
+    default:
+      return false
   }
 }
 

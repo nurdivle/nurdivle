@@ -26,6 +26,17 @@ describe('project presentation', () => {
     expect(getFeaturedProjects(projects).map(({ id }) => id)).toEqual([1, 2, 3, 4])
   })
 
+  it('ignores a featured project with no displayable content', () => {
+    const emptyProject = {
+      createdAt: '2024-04-20T00:00:00.000Z',
+      featured: true,
+      id: 99,
+      updatedAt: '2024-04-20T00:00:00.000Z',
+    } as Project
+
+    expect(getFeaturedProjects([emptyProject])).toEqual([])
+  })
+
   it('prefers the live URL and formats archive values', () => {
     const item = { ...project(1), liveUrl: 'https://www.example.com/work/', repositoryUrl: 'https://github.com/example/work' }
     expect(getProjectHref(item)).toBe(item.liveUrl)

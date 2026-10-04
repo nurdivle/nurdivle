@@ -27,6 +27,8 @@ export function FeaturedProjects({ locale, projects }: Props) {
         {featuredProjects.map((project) => {
           const image = getUploadedImage(project.image)
           const primaryHref = project.liveUrl?.trim() || null
+          const title = project.title?.trim()
+          const technologies = project.technologies?.filter((technology) => technology.name?.trim()) ?? []
 
           return (
             <article
@@ -35,13 +37,13 @@ export function FeaturedProjects({ locale, projects }: Props) {
             >
               {primaryHref && (
                 <a
-                  aria-label={project.title}
+                  aria-label={title || labels[locale].archive}
                   className="featured-project__primary-link"
                   href={primaryHref}
                   rel="noreferrer"
                   target="_blank"
                 >
-                  <span>{project.title}</span>
+                  <span>{title || labels[locale].archive}</span>
                 </a>
               )}
               {image && (
@@ -53,11 +55,13 @@ export function FeaturedProjects({ locale, projects }: Props) {
               )}
               <div className="featured-project__content">
                 {project.role && <p className="project__role">{project.role}</p>}
-                <h3>
-                  {project.title}
-                  {primaryHref && <ArrowUpRight aria-hidden="true" size={16} />}
-                </h3>
-                <p>{project.summary}</p>
+                {title && (
+                  <h3>
+                    {title}
+                    {primaryHref && <ArrowUpRight aria-hidden="true" size={16} />}
+                  </h3>
+                )}
+                {project.summary && <p>{project.summary}</p>}
                 <div className="featured-project__links">
                   {project.repositoryUrl && (
                     <a href={project.repositoryUrl} rel="noreferrer" target="_blank">
@@ -65,9 +69,9 @@ export function FeaturedProjects({ locale, projects }: Props) {
                     </a>
                   )}
                 </div>
-                {!!project.technologies?.length && (
+                {technologies.length > 0 && (
                   <ul aria-label={labels[locale].technologies} className="tag-list">
-                    {project.technologies.map((technology) => (
+                    {technologies.map((technology) => (
                       <li key={technology.id ?? technology.name}>{technology.name}</li>
                     ))}
                   </ul>

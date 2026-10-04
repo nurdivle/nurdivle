@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import {
   getProjectHref,
   getProjectLinkLabel,
+  getDisplayableProjects,
   getProjectYear,
 } from '@/lib/portfolio/projects'
 import type { PortfolioContent } from '@/lib/portfolio/types'
@@ -33,6 +34,7 @@ const ui = {
 export function ProjectArchivePage({ content }: Props) {
   const { locale, profile, projects, settings } = content
   const homeHref = `/${locale}#${locale === 'tr' ? 'projeler' : 'projects'}`
+  const displayableProjects = getDisplayableProjects(projects)
 
   return (
     <>
@@ -62,16 +64,17 @@ export function ProjectArchivePage({ content }: Props) {
               </tr>
             </thead>
             <tbody>
-              {projects.map((project) => {
+              {displayableProjects.map((project) => {
                 const href = getProjectHref(project)
+                const technologies = project.technologies?.filter((technology) => technology.name?.trim()) ?? []
 
                 return (
                   <tr key={project.id}>
                     <td className="project-archive__year">{getProjectYear(project)}</td>
-                    <td className="project-archive__title">{project.title}</td>
+                    <td className="project-archive__title">{project.title?.trim() || '—'}</td>
                     <td>
                       <ul aria-label={ui[locale].builtWith} className="project-archive__tags">
-                        {project.technologies?.map((technology) => (
+                        {technologies.map((technology) => (
                           <li key={technology.id ?? technology.name}>{technology.name}</li>
                         ))}
                       </ul>

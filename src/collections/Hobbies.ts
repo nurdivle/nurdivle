@@ -27,9 +27,9 @@ export const Hobbies: CollectionConfig = {
     afterDelete: [revalidatePortfolioAfterCollectionDelete],
   },
   fields: [
-    { name: 'key', type: 'text', label: adminLabel('Anahtar', 'Key'), required: true, unique: true },
-    { name: 'title', type: 'text', label: adminLabel('Başlık', 'Title'), localized: true, required: true },
-    { name: 'description', type: 'textarea', label: adminLabel('Açıklama', 'Description'), localized: true, required: true },
+    { name: 'key', type: 'text', label: adminLabel('Anahtar', 'Key'), unique: true },
+    { name: 'title', type: 'text', label: adminLabel('Başlık', 'Title'), localized: true },
+    { name: 'description', type: 'textarea', label: adminLabel('Açıklama', 'Description'), localized: true },
     {
       name: 'iconKey',
       type: 'select',
@@ -43,9 +43,8 @@ export const Hobbies: CollectionConfig = {
         { label: adminLabel('Halter', 'Dumbbell'), value: 'dumbbell' },
         { label: adminLabel('Kahve', 'Coffee'), value: 'coffee' },
       ],
-      required: true,
     },
-    { name: 'order', type: 'number', label: adminLabel('Sıralama', 'Order'), defaultValue: 0, index: true, required: true },
+    { name: 'order', type: 'number', label: adminLabel('Sıralama', 'Order'), defaultValue: 0, index: true },
   ],
   versions: { drafts: true },
 }

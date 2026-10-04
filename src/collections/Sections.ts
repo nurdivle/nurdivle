@@ -39,7 +39,6 @@ export const Sections: CollectionConfig = {
         ),
       },
       index: true,
-      required: true,
       unique: true,
     },
     {
@@ -55,14 +54,12 @@ export const Sections: CollectionConfig = {
         { label: adminLabel('Hobiler', 'Hobbies'), value: 'hobbies' },
         { label: adminLabel('Özel içerik', 'Custom content'), value: 'custom' },
       ],
-      required: true,
     },
     {
       name: 'label',
       type: 'text',
       label: adminLabel('Başlık', 'Label'),
       localized: true,
-      required: true,
     },
     {
       name: 'anchor',
@@ -76,7 +73,6 @@ export const Sections: CollectionConfig = {
       },
       index: true,
       localized: true,
-      required: true,
       validate: validateAnchor,
     },
     {
@@ -98,7 +94,6 @@ export const Sections: CollectionConfig = {
           name: 'value',
           type: 'text',
           label: adminLabel('Değer', 'Value'),
-          required: true,
           validate: validateAnchor,
         },
       ],
@@ -128,7 +123,6 @@ export const Sections: CollectionConfig = {
       label: adminLabel('Sıralama', 'Order'),
       defaultValue: 0,
       index: true,
-      required: true,
     },
     {
       name: 'customContent',

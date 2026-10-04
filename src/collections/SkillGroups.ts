@@ -36,8 +36,8 @@ export const SkillGroups: CollectionConfig = {
     afterDelete: [revalidatePortfolioAfterCollectionDelete],
   },
   fields: [
-    { name: 'key', type: 'text', label: adminLabel('Anahtar', 'Key'), required: true, unique: true },
-    { name: 'title', type: 'text', label: adminLabel('Başlık', 'Title'), localized: true, required: true },
+    { name: 'key', type: 'text', label: adminLabel('Anahtar', 'Key'), unique: true },
+    { name: 'title', type: 'text', label: adminLabel('Başlık', 'Title'), localized: true },
     {
       name: 'iconKey',
       type: 'select',
@@ -51,9 +51,8 @@ export const SkillGroups: CollectionConfig = {
         { label: adminLabel('Etkinlik', 'Activity'), value: 'activity' },
         { label: adminLabel('Parıltılar', 'Sparkles'), value: 'sparkles' },
       ],
-      required: true,
     },
-    { name: 'colorKey', type: 'select', label: adminLabel('Renk', 'Color'), options: colorOptions, required: true },
+    { name: 'colorKey', type: 'select', label: adminLabel('Renk', 'Color'), options: colorOptions },
     {
       name: 'skills',
       type: 'array',
@@ -64,12 +63,11 @@ export const SkillGroups: CollectionConfig = {
       },
       localized: true,
       fields: [
-        { name: 'name', type: 'text', label: adminLabel('Ad', 'Name'), required: true },
+        { name: 'name', type: 'text', label: adminLabel('Ad', 'Name') },
         { name: 'colorKey', type: 'select', label: adminLabel('Renk', 'Color'), options: colorOptions },
       ],
-      required: true,
     },
-    { name: 'order', type: 'number', label: adminLabel('Sıralama', 'Order'), defaultValue: 0, index: true, required: true },
+    { name: 'order', type: 'number', label: adminLabel('Sıralama', 'Order'), defaultValue: 0, index: true },
   ],
   versions: { drafts: true },
 }
