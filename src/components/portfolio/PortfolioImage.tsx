@@ -1,5 +1,3 @@
-import Image from 'next/image'
-
 import type { Media } from '@/payload-types'
 
 type Props = {
@@ -12,13 +10,17 @@ export function PortfolioImage({ className, image, sizes }: Props) {
   if (!image.url) return null
 
   return (
-    <Image
+    // The CMS serves the original object directly, so next/image would add client JavaScript
+    // without performing image optimization.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
       alt={image.alt?.trim() ?? ''}
       className={className}
+      decoding="async"
       height={image.height ?? 360}
+      loading="lazy"
       sizes={sizes}
       src={image.url}
-      unoptimized
       width={image.width ?? 640}
     />
   )

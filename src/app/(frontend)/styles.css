@@ -282,6 +282,11 @@ main > section:last-child {
   margin-bottom: 64px;
 }
 
+main > section:not(:first-child) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 560px;
+}
+
 .section-heading {
   width: 100vw;
   margin: 0 -24px 16px;

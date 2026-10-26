@@ -46,6 +46,7 @@ const nextConfig: NextConfig = {
     ],
   },
   output: process.env.VERCEL ? undefined : 'standalone',
+  poweredByHeader: false,
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
@@ -60,4 +61,23 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+const payloadConfig = withPayload(nextConfig, { devBundleServerPackages: false })
+const payloadHeaders = payloadConfig.headers
+
+export default {
+  ...payloadConfig,
+  headers: async () => {
+    const rules = (await payloadHeaders?.()) ?? []
+
+    return rules.map((rule) => {
+      const hasCriticalColorSchemeHint = rule.headers.some(
+        ({ key, value }) =>
+          key.toLowerCase() === 'critical-ch' && value === 'Sec-CH-Prefers-Color-Scheme',
+      )
+
+      return hasCriticalColorSchemeHint && rule.source === '/:path*'
+        ? { ...rule, source: '/admin/:path*' }
+        : rule
+    })
+  },
+} satisfies NextConfig
